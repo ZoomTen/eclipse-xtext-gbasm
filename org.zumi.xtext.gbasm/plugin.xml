@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.0"?>
+<plugin>
+	<extension point="org.eclipse.emf.ecore.generated_package">
+		<package
+			uri = "http://www.zumi.org/xtext/gbasm/Gbasm"
+			class = "org.zumi.xtext.gbasm.gbasm.GbasmPackage"
+			genModel = "model/generated/Gbasm.genmodel" />
+	</extension>
+</plugin>

@@ -1,0 +1,29 @@
+Manifest-Version: 1.0
+Automatic-Module-Name: org.zumi.xtext.gbasm
+Bundle-ManifestVersion: 2
+Bundle-Name: org.zumi.xtext.gbasm
+Bundle-Vendor: My Company
+Bundle-Version: 1.0.0.qualifier
+Bundle-SymbolicName: org.zumi.xtext.gbasm; singleton:=true
+Bundle-ActivationPolicy: lazy
+Require-Bundle: org.eclipse.xtext,
+ org.eclipse.xtext.xbase,
+ org.eclipse.equinox.common;bundle-version="3.5.0",
+ org.eclipse.emf.ecore,
+ org.eclipse.xtext.xbase.lib;bundle-version="2.14.0",
+ org.eclipse.xtext.util,
+ org.eclipse.emf.common,
+ org.antlr.runtime;bundle-version="[3.2.0,3.2.1)"
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Export-Package: org.zumi.xtext.gbasm,
+ org.zumi.xtext.gbasm.gbasm,
+ org.zumi.xtext.gbasm.scoping,
+ org.zumi.xtext.gbasm.generator,
+ org.zumi.xtext.gbasm.parser.antlr,
+ org.zumi.xtext.gbasm.gbasm.util,
+ org.zumi.xtext.gbasm.parser.antlr.internal,
+ org.zumi.xtext.gbasm.gbasm.impl,
+ org.zumi.xtext.gbasm.serializer,
+ org.zumi.xtext.gbasm.validation,
+ org.zumi.xtext.gbasm.services
+Import-Package: org.apache.log4j

@@ -1,0 +1,128 @@
+grammar org.zumi.xtext.gbasm.Gbasm with org.eclipse.xtext.common.Terminals
+
+generate gbasm "http://www.zumi.org/xtext/gbasm/Gbasm"
+
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+
+Asm:
+	(labels += LabelOrConstant)*
+;
+
+@Override
+terminal INT returns ecore::EInt:
+	('0'..'9')+|'$'('0'..'9'|'a'..'f')+|'%'('0'|'1')+
+;
+
+@Override 
+terminal SL_COMMENT:
+	';' !('\n'|'\r')* ('\r'? '\n')?
+;
+
+Register8:
+	('a'|'b'|'c'|'d'|'e'|'h'|'l')
+;
+
+Register16:
+	('af'|'bc'|'de'|'hl')
+;
+
+LabelOrConstant:
+	name=ID (':'':'? (statements += Statement)* | ('equ'|'EQU') Expr)
+;
+
+Statement:
+	LocalLabel | Instruction
+;
+
+LocalLabel:
+	'.' name=ID ':'?
+;
+
+Instruction:
+	WS? (
+		Ld |
+		LdHl1 |
+		CallOrJump |
+		PushPop |
+		Ret |
+		AndCp |
+		IncDec |
+		Rept |
+		RotateA |
+		BitOps |
+		Swap |
+		AddHl
+	)
+;
+
+Rept:
+	'rept' INT | 'endr'
+;
+
+RotateA:
+	'rla' | 'rlca' | 'rra' | 'rrca'
+;
+
+BitOps:
+	('bit' | 'res' | 'set') INT ',' (Register8 | '[' 'hl' ']')
+;
+
+AddHl:
+	'add' 'hl' ',' Register16
+;
+
+Swap:
+	'swap' (Register8 | '[' 'hl' ']')
+;
+
+IncDec:
+	('inc'|'dec')
+	(Register8 | Register16 |'[' 'hl' ']')
+;
+
+Ld:
+	'ld' (
+		Register8 ',' Register8 |
+		Register8 ',' INT |
+		Register8 ',' BankReference |
+		Register16 ',' INT |
+		Register16 ',' (LabelReference | '.' locLabel=[LocalLabel]) |
+		'a' ',' '[' (LabelReference) ']' |
+		'[' (LabelReference) ']' ',' 'a'
+	)
+;
+
+LdHl1:
+	'ld' ('i'|'d') (
+		'[' 'hl' ']' ',' 'a' |
+		'a' ',' '[' 'hl' ']'
+	)
+;
+
+Expr:
+	STRING | INT
+;
+
+LabelReference:
+	(refLabel=[LabelOrConstant]) (('+'|'-') INT)?
+;
+
+BankReference:
+	'BANK' '(' bankLabel=[LabelOrConstant] ')'
+;
+
+PushPop:
+	('push'|'pop') Register16
+;
+
+AndCp:
+	('and'|'cp') ('a' ',')? (Register8 | andCpLabelRef=[LabelOrConstant] | INT)
+;
+
+Ret:
+	'ret' ('nc'|'nz'|'c'|'z')?
+;
+
+CallOrJump:
+	('call'|'jr'|'jp') (('nc'|'nz'|'c'|'z') ',')? (absLabel=[LabelOrConstant] | '.' locLabel=[LocalLabel])
+;

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="gbasm" nsURI="http://www.zumi.org/xtext/gbasm/Gbasm" nsPrefix="gbasm">
+  <eClassifiers xsi:type="ecore:EClass" name="Asm">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="labels" upperBound="-1"
+        eType="#//LabelOrConstant" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LabelOrConstant">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="statements" upperBound="-1"
+        eType="#//Statement" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Statement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="LocalLabel" eSuperTypes="#//Statement">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Instruction" eSuperTypes="#//Statement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Ld" eSuperTypes="#//Instruction">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="locLabel" eType="#//LocalLabel"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="LabelReference" eSuperTypes="#//Ld">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="refLabel" eType="#//LabelOrConstant"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="BankReference" eSuperTypes="#//Ld">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="bankLabel" eType="#//LabelOrConstant"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AndCp" eSuperTypes="#//Instruction">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="andCpLabelRef" eType="#//LabelOrConstant"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CallOrJump" eSuperTypes="#//Instruction">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="absLabel" eType="#//LabelOrConstant"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="locLabel" eType="#//LocalLabel"/>
+  </eClassifiers>
+</ecore:EPackage>
